@@ -1,0 +1,28 @@
+#socket_client.py
+import socket
+import socket_ser
+
+HOST = '134.175.43.181'
+PORT = 8888
+
+def socket_init():
+    sess = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sess.connect((HOST, PORT))
+    sess.send(b'Raspi is here. :-3')
+    return sess
+
+def main():
+    ser = socket_ser.ser_init()
+    sess = socket_init()
+    while True:
+        msg = sess.recv(1024).decode()
+        if msg == 'quit':
+            break;
+        if msg:
+            print('Received message:', msg)
+            msg = msg + '\r\n'		#服务器直接发送过来START\r\n实际上过来的是START\\r\\n，原因未知，故这样处理一下
+        socket_ser.rasbpi_ser(ser, msg)
+    sess.close()
+
+if __name__ == '__main__':
+    main()

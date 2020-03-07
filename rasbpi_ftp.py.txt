@@ -1,0 +1,43 @@
+# coding: utf-8
+import ftplib 
+import hashlib 
+import os 
+host = '134.175.43.181'
+username = 'xuziyi'
+pwd = '200520xuziyi' 
+port = 21
+Path='/home/pi/Desktop/testvedio.mp4'
+print(1)
+serverPath = '/home/ftp'
+session = ftplib.FTP()
+session.set_debuglevel(2)
+session.set_pasv(True)
+print(2)
+session.connect(host, port)
+print(3)
+session.login(username, pwd)
+print(4)
+pwd_path = session.pwd()
+print("FTP path:", pwd_path)
+
+'''
+for i in range(10):
+    num = str(i+1)
+    print(Path)
+    x = '/text/0_'
+    filePath = Path + x + num + '.txt'
+    print(filePath)
+    session.cwd(serverPath)
+    file = open(filePath, 'rb')
+    filename, file_extension = os.path.splitext(filePath)
+    target_file_name = filePath[34:]
+    print(target_file_name)
+    session.storbinary('STOR '+target_file_name, file)
+'''
+
+
+filePath = Path
+session.cwd(serverPath)
+file = open(filePath, 'rb')
+target_file_name = filePath[17:]
+session.storbinary('STOR ' + target_file_name, file)
